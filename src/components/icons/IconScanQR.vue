@@ -1,0 +1,13 @@
+<template>
+    <svg class="w-4 h-auto" width="24" height="24" viewBox="0 0 24 24" fill="none" version="1.1" id="svg5"
+        xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+        <defs id="defs5" />
+        <g id="Scan 1" transform="matrix(0.78226102,0,0,0.78226102,0.26609,1.8306068)"
+            style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:inherit;fill-opacity:1;stroke:inherit;stroke-width:0.434637;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1">
+            <path id="Vector-4"
+                d="m 28.75,14 c 0.5523,0 1,-0.4477 1,-1 0,-0.5523 -0.4477,-1 -1,-1 z M 1.25,12 c -0.552285,0 -1,0.4477 -1,1 0,0.5523 0.447715,1 1,1 z m 2.5,6 h -1 z m 1,-1.25 c 0,-0.5523 -0.44772,-1 -1,-1 -0.55229,0 -1,0.4477 -1,1 z m 6.5,8.5 c 0.5523,0 1,-0.4477 1,-1 0,-0.5523 -0.4477,-1 -1,-1 z m -1.25,-1 v -1 z m 1.25,-21.5 c 0.5523,0 1,-0.44771 1,-1 0,-0.55228 -0.4477,-1 -1,-1 z m -8.5,6.5 c 0,0.55229 0.44772,1 1,1 0.55228,0 1,-0.44771 1,-1 z M 26.25,8 h -1 z m -1,1.25 c 0,0.55229 0.4477,1 1,1 0.5523,0 1,-0.44771 1,-1 z m -6.5,-8.5 c -0.5523,0 -1,0.44772 -1,1 0,0.55228 0.4477,1 1,1 z m 1.25,1 v -1 z m 0,22.5 v -1 z m -1.25,-1 c -0.5523,0 -1,0.4477 -1,1 0,0.5523 0.4477,1 1,1 z m 8.5,-6.5 c 0,-0.5523 -0.4477,-1 -1,-1 -0.5523,0 -1,0.4477 -1,1 z m -1,1.25 h 1 z m 2.5,-6 H 1.25 v 2 h 27.5 z m -24,6 v -1.25 h -2 V 18 Z m 6.5,5.25 H 10 v 2 h 1.25 z M 2.75,18 c 0,4.0041 3.24593,7.25 7.25,7.25 v -2 C 7.1005,23.25 4.75,20.8995 4.75,18 Z M 10,2.75 h 1.25 v -2 H 10 Z M 4.75,9.25 V 8 h -2 V 9.25 Z M 10,0.75 C 5.99593,0.75 2.75,3.99594 2.75,8 h 2 C 4.75,5.10051 7.1005,2.75 10,2.75 Z M 25.25,8 v 1.25 h 2 V 8 Z M 18.75,2.75 H 20 v -2 H 18.75 Z M 27.25,8 C 27.25,3.99594 24.0041,0.75 20,0.75 v 2 c 2.8995,0 5.25,2.35051 5.25,5.25 z M 20,23.25 h -1.25 v 2 H 20 Z m 5.25,-6.5 V 18 h 2 V 16.75 Z M 20,25.25 c 4.0041,0 7.25,-3.2459 7.25,-7.25 h -2 c 0,2.8995 -2.3505,5.25 -5.25,5.25 z"
+                fill="inherit"
+                style="font-variation-settings:normal;vector-effect:none;fill:inherit;fill-opacity:1;stroke:inherit;stroke-width:0.434637;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+        </g>
+    </svg>
+</template>
