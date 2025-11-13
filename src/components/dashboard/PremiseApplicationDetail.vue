@@ -48,6 +48,7 @@ const getAppInfo = async () => {
     const response = await axios.get(
       `admingetonpremisedetails/${route.params.id}`
     );
+    console.log(response)
 
     if (response.status === 200) {
       pageData.value = response.data.data[0];
@@ -233,7 +234,7 @@ const scrollToEdit = async () => {
   >
     <h4 class="text-sm text-center mb-5">ON-PREMISE APPLICATION DETAILS</h4>
 
-    <UserAppDetails v-if="pageData.user" :user="pageData.user" />
+    <UserAppDetails v-if="pageData.user" :user="pageData.user" :business_name="pageData.business_name" />
 
     <!-- General info -->
     <div

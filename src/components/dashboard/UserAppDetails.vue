@@ -1,6 +1,7 @@
 <script setup>
 defineProps({
-  user: Object
+  user: Object,
+  business_name: String
 })
 </script>
 
@@ -11,7 +12,7 @@ defineProps({
     <div class="flex flex-col justify-between w-4/5 h-fit gap-4">
       <div class="flex xs:flex-row align-middle">
         <p class="w-2/5 text-sm font-semibold">Business Name</p>
-        <p class="text-sm" v-text="user.business_name"></p>
+        <p class="text-sm" v-text="business_name"></p>
       </div>
       <div class="flex xs:flex-row align-middle">
         <p class="w-2/5 text-sm font-semibold">Account Type</p>
@@ -23,7 +24,7 @@ defineProps({
 
       <div class="flex xs:flex-row align-middle">
         <p class="w-2/5 text-sm font-semibold">Account Name</p>
-        <p class="text-sm" v-text="user.business_name"></p>
+        <p class="text-sm" v-text="business_name"></p>
       </div>
 
       <div class="flex xs:flex-row align-middle">
