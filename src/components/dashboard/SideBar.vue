@@ -12,6 +12,7 @@ import IconTask from "../icons/IconTask.vue";
 import IconUser from "../icons/IconUser.vue";
 import IconPayment from "../icons/IconPayment.vue";
 import IconApplication from "../icons/IconApplication.vue";
+import IconcreditDebit from "../icons/Iconcredit-debit.vue";
 import { useUserStore } from "../../stores/user";
 
 const userStore = useUserStore();
@@ -75,6 +76,10 @@ const admin_role = useUserStore().userDetails.userInfo.admin_role_id;
       <RouterLink :to="{ name: 'Clients' }" class="dashNav">
         <IconUser />
         Users
+      </RouterLink>
+      <RouterLink v-if="admin_role == 8" :to="{ name: 'debitCreditNote' }" class="dashNav">
+        <IconcreditDebit />
+        Credit/Debit
       </RouterLink>
       <RouterLink v-if="admin_role == 6" :to="{ name: 'PricingRules' }" class="dashNav">
         <IconRevenues />

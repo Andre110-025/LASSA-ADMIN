@@ -226,6 +226,11 @@ const router = createRouter({
           component: () => import("../components/dashboard/billingDetails.vue"),
         },
         {
+          path: "debitCredit-note",
+          name: "debitCreditNote",
+          component: () => import("../components/dashboard/debitCreditNote.vue"),
+        },
+        {
           path: "fund-wallet",
           name: "Fund Wallet",
           component: () => import("../components/dashboard/FundWallet.vue"),
