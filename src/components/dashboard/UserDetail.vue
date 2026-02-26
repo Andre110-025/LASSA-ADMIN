@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import GetData from "./GetData.vue";
@@ -24,6 +24,17 @@ const arrears = ref({
 });
 const loading = ref(false);
 const loadingAction = ref(false);
+const payments = ref([])
+
+const paymentHistory = computed(() => {
+  return payments.value.map((item) => ({
+    status: item.status,
+    amount_paid: item.amount_paid,
+    reference_id: item.reference_id,
+    created_at: item.created_at,
+    application_purpose: item.application_purpose,
+  }))
+})
 
 const getAppInfo = async () => {
   loading.value = true;
@@ -37,7 +48,10 @@ const getAppInfo = async () => {
         total_onpremise: data.total_onpremise,
         total_outdoor: data.total_outdoor,
         total_small_format: data.total_small_format,
+        receipts: data.receipts
       };
+
+      payments.value = pageData.value.payment_onpremise;
 
       loading.value = false;
     }
@@ -142,7 +156,7 @@ getAppInfo();
           <p class="w-2/5 text-sm font-semibold">Account Type</p>
           <p
             class="text-sm uppercase"
-            v-text="pageData.user_type.replace('_', ' ')"
+            v-text="pageData.user_type?.replace('_', ' ') || 'N/A'"
           ></p>
         </div>
 
@@ -191,6 +205,18 @@ getAppInfo();
             v-text="pageData.is_institution ? 'YES' : 'NO'"
           ></p>
         </div>
+
+        <div class="flex xs:flex-row align-middle">
+          <!-- <a class="italic font-semibold text-sm underline">View Transaction History</a> -->
+          <RouterLink
+            class="italic font-semibold text-sm underline"
+            :to="{
+              name: 'billingDetails',
+              state: { payments: paymentHistory }
+            }"
+            >View Transaction History</RouterLink
+          >
+        </div>
       </div>
     </div>
 
@@ -236,6 +262,62 @@ getAppInfo();
             )
           "
         ></p>
+      </div>
+      <div class="flex xs:flex-row align-middle">
+        <p class="w-2/5 text-sm font-semibold">
+          Documents
+        </p>
+          <div class="flex flex-col text-sm divide-y">
+            <div
+              v-for="receipt in arrears.receipts"
+              :key="receipt.id"
+              class="py-3 group"
+            >
+              <div class="flex items-center justify-between">
+                <a
+                  :href="receipt.link"
+                  target="_blank"
+                  class="text-red-600 font-medium hover:underline"
+                >
+                  {{ receipt.type }}
+                </a>
+
+                <a
+                  v-if="receipt.admin_document"
+                  :href="receipt.admin_document"
+                  target="_blank"
+                  class="ml-[10px] text-mainColor text-xs font-semibold opacity-70 group-hover:opacity-100 transition flex items-center gap-1"
+                >
+                  Admin uploaded document
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3 h-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+
+              <p class="text-gray-400 text-xs mt-1">
+                {{ new Date(receipt.created_at).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric"
+                }) }}
+              </p>
+            </div>
+
+             <p
+    v-if="!arrears.receipts || arrears.receipts.length === 0"
+    class="text-gray-400 py-3"
+  >
+    No Documents available
+  </p>
+          </div>
       </div>
     </div>
 

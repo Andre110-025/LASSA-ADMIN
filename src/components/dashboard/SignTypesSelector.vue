@@ -37,6 +37,7 @@ const loadSignTypes = async () => {
 
   try {
     const types = await signTypesService.getSignTypes(props.productType);
+    console.log("Fetched sign types:", types);
     signTypes.value = types;
   } catch (err) {
     console.error("Error loading sign types:", err);

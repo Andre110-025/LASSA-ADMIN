@@ -15,6 +15,7 @@ import CommentBox from "./buttons/CommentBox.vue";
 import UserAppDetails from "./UserAppDetails.vue";
 import PremiseItemInfo from "./PremiseItemInfo.vue";
 import PremiseEditGeneral from "./PremiseEditGeneral.vue";
+import onpremiseUserAppDetails from "./onpremiseUserAppDetails.vue";
 
 const { dateToSlash, formatCurrency } = useHelpers();
 
@@ -234,7 +235,8 @@ const scrollToEdit = async () => {
   >
     <h4 class="text-sm text-center mb-5">ON-PREMISE APPLICATION DETAILS</h4>
 
-    <UserAppDetails v-if="pageData.user" :user="pageData.user" :business_name="pageData.business_name" />
+    <!-- <UserAppDetails v-if="pageData.user" :user="pageData.user" :business_name="pageData.business_name" /> -->
+    <onpremiseUserAppDetails v-if="pageData.user" :user="pageData.user" :business_name="pageData.business_name" />
 
     <!-- General info -->
     <div

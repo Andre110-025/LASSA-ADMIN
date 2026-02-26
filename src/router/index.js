@@ -221,6 +221,11 @@ const router = createRouter({
           component: () => import("../components/dashboard/UserDetail.vue"),
         },
         {
+          path: "billing-invoice",
+          name: "billingDetails",
+          component: () => import("../components/dashboard/billingDetails.vue"),
+        },
+        {
           path: "fund-wallet",
           name: "Fund Wallet",
           component: () => import("../components/dashboard/FundWallet.vue"),

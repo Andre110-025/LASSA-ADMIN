@@ -47,7 +47,7 @@ const getAppInfo = async () => {
     const response = await axios.get(`getexpression/${route.params.id}`);
 
     if (response.status === 200) {
-      // console.log(response);
+      console.log(response);
       pageData.value = response.data.data[0];
       taskAdmin.value = response.data.admins;
       loading.value = false;
