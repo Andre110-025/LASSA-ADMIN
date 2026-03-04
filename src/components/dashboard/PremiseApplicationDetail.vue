@@ -243,6 +243,11 @@ const scrollToEdit = async () => {
       v-if="!editGeneral"
       class="flex flex-col p-6 gap-4 fxfcol border-gray-300 border-t-2"
     >
+      <!-- <div class="flex xs:flex-row align-middle">
+        <p class="w-2/5 text-sm font-semibold">Verify Code</p>
+        <p class="text-sm">{{ userDetails.userInfo.verify_code || 'N/A' }}</p>
+      </div> -->
+
       <div class="flex xs:flex-row align-middle">
         <p class="w-2/5 text-sm font-semibold">Application Process</p>
         <p class="text-sm" v-text="pageData.purpose_of_application"></p>

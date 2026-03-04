@@ -20,7 +20,7 @@ const noticeData = reactive({
   productType: null,
   paymentId: null,
   type: null,
-  applyToAccount: false,
+  applyToAccount: true,
   comments: null,
   document: null,
 });
@@ -34,7 +34,9 @@ const getApplications = async () => {
   loadingAction.value = true;
 
   try {
-    const { data } = await axios.post(`debitnoteprodlist/${props.userId}/${noticeData.productType}`);
+    const { data } = await axios.post(
+      `debitnoteprodlist/${props.userId}/${noticeData.productType}`,
+    );
 
     console.log(data);
 
@@ -46,18 +48,16 @@ const getApplications = async () => {
   } catch (error) {}
 };
 
-
 watch(
   () => noticeData.productType,
   () => {
     applicationList.value = null;
     noticeData.paymentId = null;
     getApplications();
-  }
-)
+  },
+);
 
 const submitNotice = async () => {
-
   if (noticeData.applyToAccount) {
     noticeData.paymentId = null;
   }
@@ -65,7 +65,7 @@ const submitNotice = async () => {
     loading.value = true;
     const response = await axios.post(
       `debitcreditnote/${props.userId}`,
-      noticeData
+      noticeData,
     );
 
     console.log(response);
@@ -94,27 +94,23 @@ const submitNotice = async () => {
   }
 };
 
-const fileName = ref(null)
+const fileName = ref(null);
 
 const handleFileUpload = (event) => {
+  const file = event.target.files[0];
 
-  const file = event.target.files[0]
+  if (!file) return;
 
-  if (!file) return
+  fileName.value = file.name;
 
-  fileName.value = file.name
-
-  const reader = new FileReader()
+  const reader = new FileReader();
 
   reader.onload = () => {
+    noticeData.document = reader.result;
+  };
 
-    noticeData.document = reader.result
-
-  }
-
-  reader.readAsDataURL(file)
-
-}
+  reader.readAsDataURL(file);
+};
 </script>
 
 <template>
@@ -185,9 +181,7 @@ const handleFileUpload = (event) => {
               class="uppercase"
             ></option>
           </select>
-          <label for="type" class="inputLabel"
-            >Select a Notice type</label
-          >
+          <label for="type" class="inputLabel">Select a Notice type</label>
         </div>
 
         <div class="flex flex-row gap-2.5 items-center px-5">
@@ -201,14 +195,16 @@ const handleFileUpload = (event) => {
           >
         </div>
 
-        <div v-if="!noticeData.applyToAccount" class="inputHolder">
+        <!-- incase of fuck up -->
+        <!-- v-if="!noticeData.applyToAccount" :disabled="loadingAction" -->
+        <div class="inputHolder">
           <select
             v-model="noticeData.paymentId"
             placeholder=" "
-            class="input peer uppercase text-xs"
             id="payment_id"
             required
-            :disabled="loadingAction"
+            :disabled="true"
+            class="input peer uppercase text-xs bg-gray-100 text-gray-400 cursor-not-allowed border-gray-300"
           >
             <option
               value=""
@@ -222,7 +218,11 @@ const handleFileUpload = (event) => {
               :key="index"
               :value="item.payment_id"
               class="uppercase text-xs text-wrap"
-            > {{ `${item.address_proposed_site || item.sign_address} - ${item.payment_id}` }} </option>
+            >
+              {{
+                `${item.address_proposed_site || item.sign_address} - ${item.payment_id}`
+              }}
+            </option>
           </select>
           <label for="payment_id" class="inputLabel"
             >Select an Application</label
@@ -256,65 +256,62 @@ const handleFileUpload = (event) => {
           />
           <label for="amount" class="inputLabel">Amount</label>
         </div>
-        
+
         <div class="inputHolder">
+          <div
+            class="input flex items-center justify-between cursor-pointer transition-all duration-200"
+            :class="fileName ? 'border-green-500 bg-green-50' : ''"
+            @click="$refs.fileInput.click()"
+          >
+            <!-- Left side -->
+            <div class="flex items-center gap-2 truncate">
+              <!-- Check icon -->
+              <svg
+                v-if="fileName"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-green-600 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
 
-  <div
-    class="input flex items-center justify-between cursor-pointer transition-all duration-200"
-    :class="fileName ? 'border-green-500 bg-green-50' : ''"
-    @click="$refs.fileInput.click()"
-  >
+              <span
+                :class="
+                  fileName ? 'text-green-700 font-medium' : 'text-gray-400'
+                "
+                class="text-sm truncate"
+              >
+                {{ fileName || "Upload Document" }}
+              </span>
+            </div>
 
-    <!-- Left side -->
-    <div class="flex items-center gap-2 truncate">
+            <!-- Right side -->
+            <span
+              class="text-xs font-semibold"
+              :class="fileName ? 'text-green-600' : 'text-mainColor'"
+            >
+              {{ fileName ? "Change" : "PDF" }}
+            </span>
+          </div>
 
-      <!-- Check icon -->
-      <svg
-        v-if="fileName"
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-4 h-4 text-green-600 flex-shrink-0"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-          d="M5 13l4 4L19 7"/>
-      </svg>
+          <input
+            ref="fileInput"
+            type="file"
+            class="hidden"
+            accept=".pdf"
+            @change="handleFileUpload"
+            required
+          />
 
-      <span
-        :class="fileName ? 'text-green-700 font-medium' : 'text-gray-400'"
-        class="text-sm truncate"
-      >
-        {{ fileName || "Upload Document" }}
-      </span>
-
-    </div>
-
-    <!-- Right side -->
-    <span
-      class="text-xs font-semibold"
-      :class="fileName ? 'text-green-600' : 'text-mainColor'"
-    >
-      {{ fileName ? "Change" : "PDF" }}
-    </span>
-
-  </div>
-
-  <input
-    ref="fileInput"
-    type="file"
-    class="hidden"
-    accept=".pdf"
-    @change="handleFileUpload"
-    required
-  />
-
-  <label class="inputLabel">
-    Upload Document
-  </label>
-
-</div>
-
+          <label class="inputLabel"> Upload Document </label>
+        </div>
 
         <div class="inputHolder">
           <label class="text-start mb-2.5 text-sm" for="clientComment"

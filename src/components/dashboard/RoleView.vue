@@ -12,7 +12,7 @@ import { useHelpers } from "../../helper";
 
 const { dateToSlash } = useHelpers();
 
-const headerTitles = ["Name", "Email", "Role", "Last Login", "Action"];
+const headerTitles = ["Name", "Email", "Role", "Verify Code", "Last Login", "Action"];
 
 const roles = [
   "All",
@@ -150,6 +150,9 @@ getUsers();
             </td>
             <td class="p-2.5 hidden sm:table-cell text-xs xs:text-sm uppercase">
               {{ admin.admin_role.role }}
+            </td>
+            <td class="p-2.5 text-xs xs:text-sm">
+              {{ admin.verify_code || 'N/A' }}
             </td>
             <td class="p-2.5 hidden sm:table-cell text-xs xs:text-sm">
               {{ dateToSlash(admin.last_login) }}

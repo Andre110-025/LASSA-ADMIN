@@ -174,6 +174,35 @@ const openDoc = (e) => {
     window.open(e.target.value, "_blank");
   }
 };
+
+const openSection = ref(null);
+
+const groupedReceipts = computed(() => {
+  if (!arrears.value.receipts) return {};
+
+  return arrears.value.receipts.reduce((acc, receipt) => {
+    if (!acc[receipt.type]) {
+      acc[receipt.type] = [];
+    }
+    acc[receipt.type].push(receipt);
+    return acc;
+  }, {});
+});
+// const groupedReceipts = computed(() => {
+//   if (!arrears.receipts) return {};
+
+//   return arrears.receipts.reduce((acc, receipt) => {
+//     if (!acc[receipt.type]) {
+//       acc[receipt.type] = [];
+//     }
+//     acc[receipt.type].push(receipt);
+//     return acc;
+//   }, {})
+// });
+
+const toggleSection = (type) => {
+  openSection.value = openSection.value === type ? null : type;
+};
 </script>
 
 <template>
@@ -246,6 +275,11 @@ const openDoc = (e) => {
         </div>
 
         <div class="flex xs:flex-row align-middle">
+          <p class="w-2/5 text-sm font-semibold">Verify Code</p>
+          <p class="text-sm">{{ pageData.verify_code || "N/A" }}</p>
+        </div>
+
+        <div class="flex xs:flex-row align-middle">
           <RouterLink
             class="italic font-semibold text-sm underline"
             :to="{
@@ -313,36 +347,22 @@ const openDoc = (e) => {
       </div>
       <div class="flex xs:flex-row align-middle">
         <p class="w-2/5 text-sm font-semibold">Documents</p>
-        <div
-          v-if="
-            receipts.length > 0 &&
-            receipts.some(
-              (r) =>
-                r.credit_debit_approval !== null &&
-                r.credit_debit_approval !== 'declined',
-            )
-          "
-          class="grid grid-cols-2 gap-3 w-full text-sm"
-        >
-          <div class="relative w-full" v-if="letters?.length">
-            <select
-              @change="openDoc($event)"
-              class="w-full appearance-none bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-mainColor focus:border-mainColor hover:border-gray-400 transition"
-            >
-              <option value="">Letter</option>
-
-              <option v-for="l in letters" :key="l.id" :value="l.link">
-                {{ l.type }} — {{ formatDate(l.created_at) }}
-              </option>
-            </select>
-
-            <!-- custom arrow -->
+        <div class="flex flex-col text-sm divide-y -mt-[10px]">
+          <div
+            v-for="(receipts, type) in groupedReceipts"
+            :key="type"
+            class="py-3"
+          >
             <div
-              class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400"
+              @click="toggleSection(type)"
+              class="flex items-center justify-between cursor-pointer font-semibold text-red-600"
             >
+              <span class="uppercase">{{ type }}</span>
+
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
+                class="w-4 h-4 transition-transform duration-200"
+                :class="{ 'rotate-180': openSection === type }"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -355,131 +375,58 @@ const openDoc = (e) => {
                 />
               </svg>
             </div>
-          </div>
 
-          <div class="relative w-full" v-if="invoices?.length">
-            <select
-              @change="openDoc($event)"
-              class="w-full appearance-none bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-mainColor focus:border-mainColor hover:border-gray-400 transition"
-            >
-              <option value="">Invoice</option>
-
-              <option v-for="inv in invoices" :key="inv.id" :value="inv.link">
-                {{ inv.type }} — {{ formatDate(inv.created_at) }}
-              </option>
-            </select>
-
-            <!-- custom arrow -->
-            <div
-              class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <!-- Accordion Body -->
+            <div v-if="openSection === type" class="mt-3 space-y-3">
+              <div
+                v-for="receipt in receipts"
+                :key="receipt.id"
+                class="pl-3 border-l"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
+                <div class="flex items-center justify-between">
+                  <a
+                    :href="receipt.link"
+                    target="_blank"
+                    class="text-mainColor font-medium hover:underline"
+                  >
+                    View Document
+                  </a>
+
+                  <a
+                    v-if="receipt.admin_document"
+                    :href="receipt.admin_document"
+                    target="_blank"
+                    class="ml-2 text-xs font-semibold opacity-70 hover:opacity-100"
+                  >
+                    Admin uploaded document
+                  </a>
+                </div>
+
+                <div
+                  class="min-w-[200px] max-w-[300px] break-words leading-relaxed"
+                >
+                  {{ receipt.comment || "N/A" }}
+                </div>
+
+                <p class="text-gray-400 text-xs mt-1">
+                  {{
+                    new Date(receipt.created_at).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  }}
+                </p>
+              </div>
             </div>
           </div>
 
-          <div class="relative w-full" v-if="debitNote?.length">
-            <select
-              @change="openDoc($event)"
-              class="w-full appearance-none bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-mainColor focus:border-mainColor hover:border-gray-400 transition"
-            >
-              <option value="">Debit Note</option>
-
-              <option v-for="det in debitNote" :key="det.id" :value="det.link">
-                {{ det.type }} — {{ formatDate(det.created_at) }}
-              </option>
-            </select>
-
-            <!-- custom arrow -->
-            <div
-              class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
-
-          <div class="relative w-full" v-if="creditNote?.length">
-            <select
-              @change="openDoc($event)"
-              class="w-full appearance-none bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg px-3 py-2 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-mainColor focus:border-mainColor hover:border-gray-400 transition"
-            >
-              <option value="">Credit Note</option>
-
-              <option v-for="cre in creditNote" :key="cre.id" :value="cre.link">
-                {{ cre.type }} — {{ formatDate(cre.created_at) }}
-              </option>
-            </select>
-
-            <!-- custom arrow -->
-            <div
-              class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-400"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
-          </div>
-
-          <!-- <p v-else="!arrears.receipts?.length" class="text-gray-400 col-span-2">
-            No Documents available
-          </p> -->
-          <!-- <p
-            v-if="
-              !receipts.some(
-                (r) =>
-                  r.credit_debit_approval !== null &&
-                  r.credit_debit_approval !== 'declined',
-              )
-            "
-            class="text-gray-400 col-span-2"
+          <p
+            v-if="!arrears.receipts || arrears.receipts.length === 0"
+            class="text-gray-400 py-3"
           >
             No Documents available
-          </p> -->
-        </div>
-        <div v-else-if="receipts.length > 0" class="w-full text-sm">
-          <p class="text-gray-400">
-            Documents not found.
           </p>
-        </div>
-
-        <div v-else class="w-full text-sm">
-          <p class="text-gray-400">No documents found.</p>
         </div>
       </div>
     </div>
