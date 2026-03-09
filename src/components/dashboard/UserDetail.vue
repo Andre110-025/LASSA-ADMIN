@@ -484,6 +484,7 @@ const toggleSection = (type) => {
     <div
       class="actionsHolder"
       v-if="
+        userDetails.userInfo.admin_role_id == 1 ||
         userDetails.userInfo.admin_role_id == 6 ||
         userDetails.userInfo.admin_role_id == 7 ||
         userDetails.userInfo.admin_role_id == 10

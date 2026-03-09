@@ -190,6 +190,7 @@ const handleFileUpload = (event) => {
             name="applyToAccount"
             id="applyToAccount"
             v-model="noticeData.applyToAccount"
+            :disabled="true"
           /><label class="text-sm" for="applyToAccount"
             >check to apply to account</label
           >
@@ -197,7 +198,7 @@ const handleFileUpload = (event) => {
 
         <!-- incase of fuck up -->
         <!-- v-if="!noticeData.applyToAccount" :disabled="loadingAction" -->
-        <div class="inputHolder">
+        <div v-if="false" class="inputHolder">
           <select
             v-model="noticeData.paymentId"
             placeholder=" "

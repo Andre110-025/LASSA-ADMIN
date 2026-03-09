@@ -52,6 +52,7 @@ const updateItemStatus = async (item, status) => {
       OnpremiseId: item.onpremise_id,
       type: item.credit_debit_type,
       status: status,
+      id: item.id
     };
 
     await axios.post("debitcreditadminapproval", payload);
