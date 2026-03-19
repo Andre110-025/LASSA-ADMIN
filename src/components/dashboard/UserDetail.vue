@@ -470,7 +470,8 @@ const toggleSection = (type) => {
         (userDetails.userInfo.admin_role_id == 2 ||
           userDetails.userInfo.admin_role_id == 3 ||
           userDetails.userInfo.admin_role_id == 5) &&
-        userDetails.userInfo.department === 'Billings'
+        (userDetails.userInfo.department === 'Billings' || 
+         userDetails.userInfo.department === 'M_I')
       "
     >
       <button

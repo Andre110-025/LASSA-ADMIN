@@ -133,7 +133,17 @@ const handleLoadingChange = (loadingState) => {
           />
         </div>
       </div>
-      <div class="flex justify-end mt-2">
+      <div class="flex justify-end mt-2 gap-3">
+        <RouterLink
+          v-if="lga"
+          class="flex items-center text-mainColor bg-blue-100 border-none hover:border border-mainColor text-xs rounded-md px-2.5 py-1"
+          :to="{
+            name: 'userLGAInfo',
+            state: { lga: lga }
+          }"
+        >
+          <span class="">View user LGA Info</span>
+        </RouterLink>
         <CSVDownloadButton
           v-if="advertType !== 'Third Party Application'"
           :productType="advertType"

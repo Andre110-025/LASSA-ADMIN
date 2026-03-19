@@ -30,7 +30,8 @@ export function useHelpers() {
     "Onigbongbo",
     "Shomolu",
     "Surulere",
-    "Others",
+    "others",
+    "Institution",
   ];
 
 

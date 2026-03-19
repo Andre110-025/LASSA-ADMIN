@@ -176,9 +176,7 @@ const router = createRouter({
               path: "street-app-detail/:id",
               name: "Street Lamp Application Detail",
               component: () =>
-                import(
-                  "../components/dashboard/StreetLampApplicationDetail.vue"
-                ),
+                import("../components/dashboard/StreetLampApplicationDetail.vue"),
             },
             {
               path: "third-party-app-detail/:id",
@@ -221,14 +219,30 @@ const router = createRouter({
           component: () => import("../components/dashboard/UserDetail.vue"),
         },
         {
+          path: "appUser-details/:uid",
+          name: "App User",
+          component: () => import("../components/dashboard/AppUserDetails.vue"),
+        },
+        {
           path: "billing-invoice",
           name: "billingDetails",
           component: () => import("../components/dashboard/billingDetails.vue"),
         },
         {
+          path: "lga-invoice",
+          name: "lgaDetails",
+          component: () => import("../components/dashboard/lgaDetails.vue"),
+        },
+        {
           path: "debitCredit-note",
           name: "debitCreditNote",
-          component: () => import("../components/dashboard/debitCreditNote.vue"),
+          component: () =>
+            import("../components/dashboard/debitCreditNote.vue"),
+        },
+        {
+          path: "userLGA-info",
+          name: "userLGAInfo",
+          component: () => import("../components/dashboard/userLGAInfo.vue"),
         },
         {
           path: "fund-wallet",

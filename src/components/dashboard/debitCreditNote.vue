@@ -128,6 +128,7 @@ const openConfirmAction = (item, status) => {
             type: item.credit_debit_type,
             status,
             comment,
+            id: item.id
           };
 
           await axios.post("debitcreditadminapproval", payload);

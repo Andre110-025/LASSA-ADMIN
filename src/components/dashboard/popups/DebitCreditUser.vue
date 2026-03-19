@@ -252,7 +252,7 @@ const handleFileUpload = (event) => {
             class="input peer"
             id="amount"
             v-model="noticeData.amount"
-            step="01"
+            step="0.01"
             required
           />
           <label for="amount" class="inputLabel">Amount</label>
